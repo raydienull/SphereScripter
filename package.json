@@ -1,0 +1,104 @@
+{
+  "name": "sphere-scripter-formatter",
+  "displayName": "Sphere Scripter",
+  "description": "Syntaxt highlight and formatter for Sphere script (.scp) files",
+  "version": "1.0.0",
+  "publisher": "Raylde",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruben-feito/spherescript-syntax-highlight-formatter"
+  },
+  "engines": {
+    "vscode": "^1.82.1"
+  },
+  "icon": "img/sphere.png",
+  "galleryBanner": {
+    "color": "#002e54",
+    "theme": "dark"
+  },
+  "keywords": [
+    "Sphere",
+    "Sphere X",
+    "Sphere Scripter",
+    "Scripter",
+    "scp"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "scp",
+        "aliases": [
+          "SCP"
+        ],
+        "extensions": [
+          ".scp"
+        ],
+        "configuration": "./scp.configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "scp",
+        "scopeName": "source.sphere",
+        "path": "./syntaxes/scp.Language.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "scp",
+        "path": "./snippets/scp.Snippets.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[scp]": {
+        "editor.defaultFormatter": "Raylde.sphere-scripter-formatter"
+      }
+    }
+  },
+  "scripts": {
+    "extension": "node ./extension.js"
+  },
+  "configurations": [
+    {
+      "type": "extensionHost",
+      "request": "launch",
+      "name": "Launch Extension",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "npm: compile"
+    }
+  ],
+  "tasks": {
+    "npm: compile": {
+      "command": "npm",
+      "args": [
+        "run",
+        "compile"
+      ],
+      "type": "shell"
+    }
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.79.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "eslint": "^8.41.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.3",
+    "@vscode/test-electron": "^2.3.2"
+  }
+}

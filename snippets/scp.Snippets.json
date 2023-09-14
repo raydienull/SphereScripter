@@ -1,0 +1,207 @@
+{
+  "begin": {
+    "prefix": "begin",
+    "body": [
+      "BEGIN",
+      "\t$0",
+      "END"
+    ],
+    "description": "Agrupa un conjunto de líneas, para su uso con las sentencias DORAND y DOSWITCH."
+  },
+  "dorand": {
+    "prefix": "dorand",
+    "body": [
+      "DORAND ${1:value}",
+      "\t$0",
+      "ENDDO"
+    ],
+    "description": "Executes a random line of code within the block."
+  },
+  "doswitch": {
+    "prefix": "doswitch",
+    "body": [
+      "DOSWITCH ${1:value}",
+      "\t$0",
+      "ENDDO"
+    ],
+    "description": "Executes the specified line of code within the block"
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "FOR ${2:name} ${1:range}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FOR es una forma poderosa de crear una función recursiva, y permite un nivel más simple de control sobre tus recursiones. Si no se declara ninguna variable, se puede acceder a la cuenta utilizando <LOCAL._FOR>. Cambiar LOCAL._FOR o lo que hayas declarado como cuenta, no cambiará el comportamiento del bucle. Pero tenga en cuenta que si apila bucles FOR sin darles diferentes variables de bucle, el bucle más interno sobrescribirá las variables de bucle de sus sucesores, lo que normalmente lleva a un completo desorden de todo el bucle"
+  },
+  "forcharlayer": {
+    "prefix": "forcharlayer",
+    "body": [
+      "FORCHARLAYER ${1:layer}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCHARLAYER es otro tipo de bucle FOR. Básicamente te permite hacer un bucle a través de cada ítem que está almacenado en la capa especificada de un personaje. Esto puede ser útil para cuando quieras manipular todas las runas de hechizo o ítems de memoria en un personaje como una alternativa a usar FINDLAYER.x en un bucle. Algo a tener en cuenta aquí es que mientras se está dentro del bucle, el objeto por defecto se cambiará temporalmente al ítem en el bucle."
+  },
+  "forcharmemorytype": {
+    "prefix": "forcharmemorytype",
+    "body": [
+      "FORCHARMEMORYTYPE ${1:memory_flags}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCHARMEMORYTYPE es un tipo de bucle FOR muy útil. Puedes querer usarlo para sistemas de experiencia, y algunos sistemas de matar jugadores y NPCs. Hace un bucle a través de cada ítem de memoria en un personaje que tiene una bandera especificada."
+  },
+  "forchars": {
+    "prefix": "forchars",
+    "body": [
+      "FORCHARS ${1:distance}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCHARS es un bucle FOR que puedes utilizar para comprobar todos los móviles (jugador online y NPC) dentro de un radio determinado de un objeto."
+  },
+  "forclients": {
+    "prefix": "forclients",
+    "body": [
+      "FORCLIENTS ${1:distance}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCLIENTS es un bucle FOR, se usa para afectar a clientes en un radio determinado. Si no establece el radio, radio 18 se utiliza como predeterminado. FORCLIENTS sólo actúa sobre los personajes jugadores que están conectados."
+  },
+  "forplayers": {
+    "prefix": "forplayers",
+    "body": [
+      "FORPLAYERS ${1:distance}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORPLAYERS es un bucle FOR, se usa para afectar a jugadores en un radio determinado. Si no establece el radio, radio 18 se utiliza como predeterminado. FORPLAYERS actúa sobre todos y cada uno de los personajes jugadores, incluso si están desconectados."
+  },
+  "forcont": {
+    "prefix": "forcont",
+    "body": [
+      "FORCONT ${1:cont_uid} ${2:max_subcontainers}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCONT es un tipo de bucle FOR. Recorre cada elemento de un contenedor. El objeto por defecto dentro del bucle será el elemento sobre el que se está realizando el bucle."
+  },
+  "forcontid": {
+    "prefix": "forcontid",
+    "body": [
+      "FORCONTID ${1:baseID}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORCONTID es un bucle FOR que funciona de forma similar a FORCONT, excepto que sólo recorrerá los elementos que tengan un BASEID específico."
+  },
+  "forconttype": {
+    "prefix": "forconttype",
+    "body": [
+      "FORCONTTYPE ${1:itemtype}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "Este es otro bucle FOR que es casi idéntico a FORCONID. La única diferencia es que en lugar de recorrer los elementos con un BASEID específico, recorrerá los elementos con un TYPE específico."
+  },
+  "forinstances": {
+    "prefix": "forinstances",
+    "body": [
+      "FORISTANCES ${1:baseID}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORINSTANCES se trata de un bucle especial que recorrerá todas las instancias de un determinado BASEID de personaje o ítem que existan en el servidor. Esto ofrece las siguientes ventajas sobre el uso de FORITEMS/FORCHARS. Sphere sólo ejecutará su script para objetos con el BASEID que le interesa. Sphere sabe cuántas instancias del objeto existen, por lo que puede abortar el bucle en el momento apropiado. Los objetos dentro de contenedores (por ejemplo, mochilas de personajes o bancos de jugadores) no se perderán."
+  },
+  "foritems": {
+    "prefix": "foritems",
+    "body": [
+      "FORITEMS ${1:distance}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FORITEMS funciona de forma muy similar a FORCHARS, excepto que comprueba los ITEMS dentro del radio establecido en lugar de los caracteres. El objeto por defecto es el elemento que puede ser afectado."
+  },
+  "forobjs": {
+    "prefix": "forobjs",
+    "body": [
+      "FOROBJS ${1:distance}",
+      "\t$0",
+      "ENDFOR"
+    ],
+    "description": "FOROBJS funciona de la misma manera que FORITEMS y FORCHARS con la excepción de que este bucle encontrará tanto caracteres COMO elementos dentro del radio especificado."
+  },
+  "while": {
+    "prefix": "white",
+    "body": [
+      "WHILE ${1:conditional}",
+      "\t$0",
+      "ENDWHILE"
+    ],
+    "description": "WHILE es un bucle condicional, un bloque de código que se repetirá mientras una condición dada sea verdadera. Básicamente se puede pensar en esto como un bloque IF..ENDIF que se ejecutará indefinidamente hasta que la sentencia IF devuelva false. Mientras se está dentro del bucle, LOCAL._WHILE puede utilizarse para acceder al número de veces que el script ha entrado en bucle hasta el momento. En algunas situaciones es posible que desee utilizar esto para imponer un límite en el número de veces que su bloque WHILE puede hacer un bucle antes de que se vea obligado a salir."
+  },
+  "try": {
+    "prefix": "try",
+    "body": [
+      "TRY ${1:value}"
+    ],
+    "description": "TRY se puede utilizar para ejecutar una línea de script donde la parte izquierda (es decir, una propiedad que se establece o una función que se llama) se basa en el valor de una expresión."
+  },
+  "tryp": {
+    "prefix": "tryp",
+    "body": [
+      "TRYP ${1:plevel} ${2:value}"
+    ],
+    "description": "Es igual que la función TRY, salvo que también se proporciona un parámetro PLEVEL. Si el PLEVEL de SRC es menor que este valor, la línea no se ejecutará. Sin embargo, con TRYP la línea también se ejecutará si no hay SRC (en un disparador @Timer, por ejemplo)."
+  },
+  "trysrc": {
+    "prefix": "trysrc",
+    "body": [
+      "TRYSRC ${1:value}"
+    ],
+    "description": "La función TRYSRC se puede utilizar para anular el objeto SRC para una línea determinada. La sintaxis de esta función es TRYSRC uid comando, donde uid es el UID del personaje que se quiere convertir en SRC, y comando es el comando que se quiere ejecutar."
+  },
+  "trysrv": {
+    "prefix": "trysrv",
+    "body": [
+      "TRYSRV ${1:value}"
+    ],
+    "description": "TRYSRV es similar al comando TRYSRC, salvo que en lugar de ejecutar un comando con un carácter específico como SRC, el comando se ejecuta con SRC establecido en el objeto SERV."
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "IF ($1)",
+      "    $2",
+      "ENDIF"
+    ],
+    "description": "if block"
+  },
+  "if-else": {
+    "prefix": "if-else",
+    "body": [
+      "IF ($1)",
+      "    $2",
+      "ELSE",
+      "    $3",
+      "ENDIF"
+    ],
+    "description": "if-else block"
+  },
+  "if-elseif-else": {
+    "prefix": "if-elseif-else",
+    "body": [
+      "IF ($1)",
+      "    $2",
+      "ELSEIF ($3)",
+      "    $4",
+      "ELSE",
+      "    $5",
+      "ENDIF"
+    ],
+    "description": "if-elseif-else block"
+  }
+}
