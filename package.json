@@ -9,7 +9,7 @@
     "url": "https://github.com/SphereUO/SphereScripter"
   },
   "engines": {
-    "vscode": "^1.51.1"
+    "vscode": "^1.79.0"
   },
   "icon": "img/sphere.png",
   "galleryBanner": {
