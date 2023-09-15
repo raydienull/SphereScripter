@@ -2,11 +2,11 @@
   "name": "sphere-scripter-formatter",
   "displayName": "Sphere Scripter",
   "description": "Syntaxt highlight and formatter for Sphere script (.scp) files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "Raylde",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruben-feito/spherescript-syntax-highlight-formatter"
+    "url": "https://github.com/SphereUO/SphereScripter"
   },
   "engines": {
     "vscode": "^1.82.1"
