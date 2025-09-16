@@ -1,7 +1,15 @@
-const path = require('path');
+/**
+ * @fileoverview Main test runner entry point for VS Code extension tests.
+ * Downloads VS Code, sets up the extension environment, and runs tests.
+ */
 
+const path = require('path');
 const { runTests } = require('@vscode/test-electron');
 
+/**
+ * Main function that sets up and runs the extension tests.
+ * Downloads VS Code if needed and executes tests in the extension environment.
+ */
 async function main() {
 	try {
 		// The folder containing the Extension Manifest package.json

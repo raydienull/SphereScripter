@@ -1,7 +1,7 @@
 {
   "name": "sphere-scripter-formatter",
   "displayName": "Sphere Scripter",
-  "description": "Syntaxt highlight and formatter for Sphere script (.scp) files",
+  "description": "Syntax highlighting, intelligent formatting, and code snippets for Sphere script (.scp) files",
   "version": "1.0.2",
   "publisher": "Raylde",
   "repository": {
@@ -63,32 +63,10 @@
     }
   },
   "scripts": {
+    "test": "node ./test/runTest.js",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
     "extension": "node ./extension.js"
-  },
-  "configurations": [
-    {
-      "type": "extensionHost",
-      "request": "launch",
-      "name": "Launch Extension",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js"
-      ],
-      "preLaunchTask": "npm: compile"
-    }
-  ],
-  "tasks": {
-    "npm: compile": {
-      "command": "npm",
-      "args": [
-        "run",
-        "compile"
-      ],
-      "type": "shell"
-    }
   },
   "devDependencies": {
     "@types/vscode": "^1.79.0",

@@ -110,7 +110,7 @@
   "forinstances": {
     "prefix": "forinstances",
     "body": [
-      "FORISTANCES ${1:baseID}",
+      "FORINSTANCES ${1:baseID}",
       "\t$0",
       "ENDFOR"
     ],
@@ -135,7 +135,7 @@
     "description": "FOROBJS works the same way as FORITEMS and FORCHARS with the exception that this loop will find both CHARACTERS AND ITEMS within the specified radius."
   },
   "while": {
-    "prefix": "white",
+    "prefix": "while",
     "body": [
       "WHILE ${1:conditional}",
       "\t$0",
@@ -203,5 +203,108 @@
       "ENDIF"
     ],
     "description": "if-elseif-else block"
+  },
+  "itemdef": {
+    "prefix": "itemdef",
+    "body": [
+      "[ITEMDEF ${1:i_item_name}]",
+      "DEFNAME=${1:i_item_name}",
+      "ID=${2:item_id}",
+      "TYPE=${3:t_normal}",
+      "NAME=${4:Item Name}",
+      "WEIGHT=${5:1.0}",
+      "",
+      "ON=@Create",
+      "$0",
+      "",
+      "ON=@DClick",
+      "RETURN 1"
+    ],
+    "description": "Create a new item definition"
+  },
+  "chardef": {
+    "prefix": "chardef",
+    "body": [
+      "[CHARDEF ${1:c_char_name}]",
+      "DEFNAME=${1:c_char_name}",
+      "ID=${2:char_id}",
+      "NAME=${3:Character Name}",
+      "STR=${4:100}",
+      "INT=${5:100}",
+      "DEX=${6:100}",
+      "",
+      "ON=@Create",
+      "$0",
+      "",
+      "ON=@NPCRestock",
+      "RETURN 1"
+    ],
+    "description": "Create a new character definition"
+  },
+  "typedef": {
+    "prefix": "typedef",
+    "body": [
+      "[TYPEDEF ${1:t_type_name}]",
+      "DEFNAME=${1:t_type_name}",
+      "",
+      "ON=@Create",
+      "$0",
+      "",
+      "ON=@Timer",
+      "RETURN 1"
+    ],
+    "description": "Create a new type definition"
+  },
+  "events": {
+    "prefix": "events",
+    "body": [
+      "[EVENTS ${1:e_event_name}]",
+      "",
+      "ON=@${2:Trigger}",
+      "$0",
+      "RETURN 1"
+    ],
+    "description": "Create a new events block"
+  },
+  "function": {
+    "prefix": "function",
+    "body": [
+      "[FUNCTION ${1:f_function_name}]",
+      "// ${2:Function description}",
+      "LOCAL.${3:var}=<ARGS>",
+      "$0",
+      "RETURN 1"
+    ],
+    "description": "Create a new function"
+  },
+  "say": {
+    "prefix": "say",
+    "body": [
+      "SAY ${1:message}"
+    ],
+    "description": "Make character say something"
+  },
+  "sysmessage": {
+    "prefix": "sysmsg",
+    "body": [
+      "SYSMESSAGE ${1:message}"
+    ],
+    "description": "Send system message to player"
+  },
+  "newitem": {
+    "prefix": "newitem",
+    "body": [
+      "NEWITEM ${1:item_id}",
+      "NEW.CONT=<SRC.UID>",
+      "$0"
+    ],
+    "description": "Create new item in source container"
+  },
+  "dialog": {
+    "prefix": "dialog",
+    "body": [
+      "DIALOG ${1:d_dialog_name}"
+    ],
+    "description": "Open dialog for source"
   }
 }

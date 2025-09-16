@@ -1,5 +1,13 @@
-// constants.js
+/**
+ * @fileoverview Constants and keyword definitions for Sphere script language.
+ * Contains arrays of keywords used by the SCP formatter for proper capitalization.
+ */
 
+/**
+ * Variable keywords that appear in assignment patterns (keyword=value).
+ * These are commonly used property names in Sphere script definitions.
+ * @type {string[]}
+ */
 const Variables = [
   "SECTOR",
   "ACTION",
@@ -120,7 +128,6 @@ const Variables = [
   "ANIMALLORE",
   "ITEMID",
   "ARMSLORE",
-  "ARMSLORE",
   "BEGGING",
   "BLACKSMITHING",
   "BOWCRAFT",
@@ -181,8 +188,105 @@ const Variables = [
   "SOUND",
   "CanUse",
   "ReqStr",
+  // Common Sphere functions and properties
+  "BOUNCE",
+  "DIALOG",
+  "DIALOGCLOSE",
+  "EMOTE",
+  "EQUIP",
+  "EVENTS",
+  "FACE",
+  "FOLLOW",
+  "GO",
+  "GOBACK",
+  "GOSUB",
+  "NEWITEM",
+  "NEWDUPE",
+  "NUDGEDOWN",
+  "NUDGEUP",
+  "RETURN",
+  "SAY",
+  "SAYUA",
+  "SAYU",
+  "SPEAK",
+  "SPEECHCOLOR",
+  "SPEECHFONT",
+  "SPEECHMODE",
+  "SPEECHPRIVACY",
+  "SYSMESSAGE",
+  "TRYSRC",
+  "TRYP",
+  "TRYSRV",
+  "UNEQUIP",
+  "ACTARG1",
+  "ACTARG2",
+  "ACTARG3",
+  "ACTDIFF",
+  "ACTPRV",
+  "ACTTARG",
+  "ARGN1",
+  "ARGN2",
+  "ARGN3",
+  "BANK",
+  "BASEID",
+  "BOOK",
+  "BREATH",
+  "CRIMINAL",
+  "CTAG",
+  "CTAGCOUNT",
+  "CTAGAT",
+  "DB",
+  "GOLD",
+  "GUILDSTONE",
+  "HITS",
+  "HUNGER",
+  "ISTIMERF",
+  "ISEVENT",
+  "ISITEM",
+  "ISCHAR",
+  "ISONLINE",
+  "ISPLAYER",
+  "ISTEVENT",
+  "LOCAL",
+  "MAGECORE",
+  "MAGEPOWER",
+  "MASTERUID",
+  "MAXWEIGHT",
+  "MURDERCOUNT",
+  "NOTOTIMEOUT",
+  "OWNERUID",
+  "PLAYERVENDOR",
+  "POLYMORPH",
+  "PRIVFLAGS",
+  "QVAL",
+  "RANDOMNAME",
+  "REGENVAL",
+  "SALVAGE",
+  "SECTOR",
+  "SKILLTEST",
+  "SKILLTOTAL",
+  "SMELT",
+  "SPELLCHECK",
+  "STAM",
+  "STONES",
+  "SWING",
+  "TAGAT",
+  "TAGCOUNT",
+  "TIMERF",
+  "TITHING",
+  "TOTAL",
+  "TOTALWEIGHT",
+  "USE",
+  "WEAPON",
+  "WEAPONCLASS"
 ];
 
+/**
+ * Trigger event names used in Sphere scripts.
+ * These are event handlers that can be triggered by various game actions.
+ * Used in ON=@TriggerName patterns.
+ * @type {string[]}
+ */
 const Triggers = [
   "AfterClick",
   "Attack",
@@ -307,16 +411,8 @@ const Triggers = [
   "UserVirtue",
   "UserVirtueInvoke",
   "UserWarmode",
-  "AfterClick",
   "Buy",
-  "Click",
-  "ClientTooltip",
-  "ContextMenuRequest",
-  "ContextMenuSelect",
-  "Create",
   "Damage",
-  "DClick",
-  "Destroy",
   "DropOn_Char",
   "DropOn_Ground",
   "DropOn_Item",
@@ -328,14 +424,12 @@ const Triggers = [
   "PickUp_Self",
   "PickUp_Stack",
   "Sell",
-  "SpellEffect",
   "Step",
   "TargOn_Cancel",
   "TargOn_Char",
   "TargOn_Ground",
   "TargOn_Item",
   "Timer",
-  "ToolTip",
   "UnEquip",
   "ResourceTest",
   "ResourceFound",
@@ -343,7 +437,6 @@ const Triggers = [
   "Enter",
   "Exit",
   "RegPeriodic",
-  "Step",
   "Abort",
   "Fail",
   "Gain",
@@ -352,54 +445,54 @@ const Triggers = [
   "Start",
   "Success",
   "UseQuick",
-  "Effect",
-  "Fail",
-  "Select",
-  "Start",
-  "Success"
+  "Effect"
 ];
 
-
+/**
+ * Control structure keywords used in Sphere scripts.
+ * These keywords control program flow and logic structures.
+ * @type {string[]}
+ */
 const Controls = [
   "BEGIN",
   "END",
   "DORAND",
   "ENDDO",
   "DOSWITCH",
-  "ENDDO",
   "FOR",
   "ENDFOR",
   "FORCHARLAYER",
-  "ENDFOR",
   "FORCHARMEMORYTYPE",
-  "ENDFOR",
   "FORCHARS",
-  "ENDFOR",
   "FORCLIENTS",
-  "ENDFOR",
   "FORCONT",
-  "ENDFOR",
   "FORCONTID",
-  "ENDFOR",
   "FORCONTTYPE",
-  "ENDFOR",
   "FORINSTANCES",
-  "ENDFOR",
   "FORITEMS",
-  "ENDFOR",
   "FOROBJS",
-  "ENDFOR",
   "FORPLAYERS",
-  "ENDFOR",
   "IF",
+  "ELSEIF",
   "ELSE",
   "ENDIF",
   "WHILE",
   "ENDWHILE",
-  "TRY"
+  "TRY",
+  "TRYP",
+  "TRYSRC",
+  "TRYSRV",
+  "RETURN",
+  "CONTINUE",
+  "BREAK",
+  "STOP"
 ];
 
-
+/**
+ * Type and reference keywords used in Sphere scripts.
+ * These represent various object types and references available in scripts.
+ * @type {string[]}
+ */
 const TypesKeywords = [
   "ACT",
   "ARG",
@@ -430,8 +523,10 @@ const TypesKeywords = [
   "CONT"
 ];
 
-
-exports.VarsKeywords = Variables;
-exports.Triggers = Triggers;
-exports.Controls = Controls;
-exports.TypesKeywords = TypesKeywords;
+// Export all keyword arrays for use by the formatter
+module.exports = {
+  VarsKeywords: Variables,
+  Triggers,
+  Controls,
+  TypesKeywords
+};
