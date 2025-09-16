@@ -2,8 +2,8 @@
   "name": "sphere-scripter-formatter",
   "displayName": "Sphere Scripter",
   "description": "Syntax highlighting, intelligent formatting, and code snippets for Sphere script (.scp) files",
-  "version": "1.0.2",
-  "publisher": "Raylde",
+  "version": "1.1.0",
+  "publisher": "Raydie",
   "repository": {
     "type": "git",
     "url": "https://github.com/SphereUO/SphereScripter"
