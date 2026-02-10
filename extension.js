@@ -22,8 +22,8 @@ function activate(context) {
      * @param {vscode.TextDocument} document - The document to format
      * @returns {vscode.TextEdit[]} Array of text edits to apply
      */
-    provideDocumentFormattingEdits(document) {
-      return formatter.provideDocumentFormattingEdits(document);
+    provideDocumentFormattingEdits(document, options) {
+      return formatter.provideDocumentFormattingEdits(document, options);
     },
   };
 

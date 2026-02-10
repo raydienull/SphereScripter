@@ -13,6 +13,109 @@ const { VarsKeywords, ScopedVarPrefixes, ControlKeywords } = require("./constant
  */
 class SCPFormatter {
   /**
+   * Determines the indentation unit based on VS Code formatting options.
+   * 
+   * @param {vscode.FormattingOptions | undefined} options - Formatting options
+   * @returns {string} Indentation unit (tabs or spaces)
+   */
+  getIndentUnit(options) {
+    if (options && options.insertSpaces) {
+      const size = Number.isInteger(options.tabSize) ? options.tabSize : 2;
+      return " ".repeat(Math.max(1, size));
+    }
+
+    return "\t";
+  }
+
+  /**
+   * Returns true when a line is a section header like [ITEMDEF ...].
+   * 
+   * @param {string} line - The line to check
+   * @returns {boolean} True if the line is a section header
+   */
+  isSectionHeader(line) {
+    const sectionPattern = /^\s*\[(\w+)(\s+.*)?\]\s*$/i;
+    return sectionPattern.test(line);
+  }
+
+  /**
+   * Extracts the first control keyword from a line if present.
+   * 
+   * @param {string} line - The line to inspect
+   * @returns {string | null} The control keyword in uppercase or null
+   */
+  getControlKeyword(line) {
+    const match = line.match(/^\s*([A-Z_]+)\b/i);
+    if (!match) {
+      return null;
+    }
+
+    const keyword = match[1].toUpperCase();
+    if (ControlKeywords.includes(keyword)) {
+      return keyword;
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns true when the control keyword closes a block.
+   * 
+   * @param {string | null} keyword - The keyword to check
+   * @returns {boolean} True if the keyword is a block end
+   */
+  isBlockEnd(keyword) {
+    return (
+      keyword === "END" ||
+      keyword === "ENDIF" ||
+      keyword === "ENDFOR" ||
+      keyword === "ENDWHILE" ||
+      keyword === "ENDDO"
+    );
+  }
+
+  /**
+   * Returns true when the control keyword is a mid-block token.
+   * 
+   * @param {string | null} keyword - The keyword to check
+   * @returns {boolean} True if the keyword is a block middle
+   */
+  isBlockMiddle(keyword) {
+    return keyword === "ELSE" || keyword === "ELSEIF";
+  }
+
+  /**
+   * Returns true when the control keyword opens a block.
+   * 
+   * @param {string | null} keyword - The keyword to check
+   * @returns {boolean} True if the keyword is a block start
+   */
+  isBlockStart(keyword) {
+    if (!keyword) {
+      return false;
+    }
+
+    return (
+      keyword === "BEGIN" ||
+      keyword === "IF" ||
+      keyword === "WHILE" ||
+      keyword === "DORAND" ||
+      keyword === "DOSWITCH" ||
+      keyword === "FOR" ||
+      keyword === "FORCHARLAYER" ||
+      keyword === "FORCHARMEMORYTYPE" ||
+      keyword === "FORCHARS" ||
+      keyword === "FORCLIENTS" ||
+      keyword === "FORCONT" ||
+      keyword === "FORCONTID" ||
+      keyword === "FORCONTTYPE" ||
+      keyword === "FORINSTANCES" ||
+      keyword === "FORITEMS" ||
+      keyword === "FOROBJS" ||
+      keyword === "FORPLAYERS"
+    );
+  }
+  /**
    * Returns true when a line is a comment and should not be formatted.
    * 
    * @param {string} line - The line to check
@@ -28,13 +131,41 @@ class SCPFormatter {
    * @param {vscode.TextDocument} document - The document to format
    * @returns {vscode.TextEdit[]} Array of text edits to apply formatting
    */
-  provideDocumentFormattingEdits(document) {
+  provideDocumentFormattingEdits(document, options) {
     const textEdits = [];
+    const indentUnit = this.getIndentUnit(options);
+    let indentLevel = 0;
 
     for (let i = 0; i < document.lineCount; i++) {
       const line = document.lineAt(i);
       const trimmedLine = line.text.trimRight();
-      const formattedLine = this.formatLine(trimmedLine);
+      const trimmedContent = trimmedLine.trimLeft();
+      const formattedContent = this.formatLine(trimmedContent);
+      let formattedLine = formattedContent;
+
+      if (formattedContent.length > 0) {
+        if (this.isSectionHeader(formattedContent)) {
+          indentLevel = 0;
+        } else {
+          const controlKeyword = this.getControlKeyword(formattedContent);
+          const isCloser = this.isBlockEnd(controlKeyword);
+          const isMiddle = this.isBlockMiddle(controlKeyword);
+
+          if (isCloser || isMiddle) {
+            indentLevel = Math.max(0, indentLevel - 1);
+          }
+
+          formattedLine = `${indentUnit.repeat(indentLevel)}${formattedContent}`;
+
+          if (this.isBlockStart(controlKeyword)) {
+            indentLevel += 1;
+          }
+
+          if (isMiddle) {
+            indentLevel += 1;
+          }
+        }
+      }
       const startPos = new vscode.Position(i, 0);
       const endPos = new vscode.Position(i, line.text.length);
       const range = new vscode.Range(startPos, endPos);
