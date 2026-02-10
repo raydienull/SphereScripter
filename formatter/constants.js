@@ -488,6 +488,7 @@ const ControlKeywords = [
   "FORPLAYERS",
   "IF",
   "ELSEIF",
+  "ELIF",
   "ELSE",
   "ENDIF",
   "WHILE",

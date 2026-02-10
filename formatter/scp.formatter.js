@@ -81,7 +81,7 @@ class SCPFormatter {
    * @returns {boolean} True if the keyword is a block middle
    */
   isBlockMiddle(keyword) {
-    return keyword === "ELSE" || keyword === "ELSEIF";
+    return keyword === "ELSE" || keyword === "ELSEIF" || keyword === "ELIF";
   }
 
   /**
