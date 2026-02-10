@@ -3,10 +3,10 @@
   "displayName": "Sphere Scripter",
   "description": "Syntax highlighting, intelligent formatting, and code snippets for Sphere script (.scp) files",
   "version": "1.1.1",
-  "publisher": "Raylde",
+  "publisher": "Raydie",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SphereUO/SphereScripter"
+    "url": "https://github.com/raydienull/SphereScripter"
   },
   "engines": {
     "vscode": "^1.79.0"
@@ -58,7 +58,7 @@
     ],
     "configurationDefaults": {
       "[scp]": {
-        "editor.defaultFormatter": "Raylde.sphere-scripter-formatter"
+        "editor.defaultFormatter": "Raydie.sphere-scripter-formatter"
       }
     }
   },
