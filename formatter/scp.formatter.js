@@ -5,7 +5,7 @@
  */
 
 const vscode = require("vscode");
-const { VarsKeywords, Controls } = require("./constants");
+const { VarsKeywords, ScopedVarPrefixes, Controls } = require("./constants");
 
 /**
  * Formatter class for Sphere script (.scp) files.
@@ -68,6 +68,30 @@ class SCPFormatter {
     for (const varKeyword of VarsKeywords) {
       const pattern = new RegExp(`^[ \\t]*${varKeyword}=`, "i");
       line = line.replace(pattern, `${varKeyword.toUpperCase()}=`);
+    }
+
+    return line;
+  }
+
+  /**
+   * Formats scoped variable prefixes for dotted assignments.
+   * Converts patterns like "tag.name=" to "TAG.name=".
+   * 
+   * @param {string} line - The line to format
+   * @returns {string} The formatted line with uppercase scoped prefixes
+   */
+  formatScopedVars(line) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith("//")) {
+      return line;
+    }
+
+    for (const prefix of ScopedVarPrefixes) {
+      const pattern = new RegExp(`^(\\s*)(${prefix})(?=\\.|=)`, "i");
+      line = line.replace(pattern, (match, whitespace, keyword) => {
+        return whitespace + keyword.toUpperCase();
+      });
     }
 
     return line;
@@ -172,6 +196,7 @@ class SCPFormatter {
       // 5. Function calls (SAY, EMOTE, etc.)
       line = this.formatSections(line);
       line = this.formatTriggers(line);
+      line = this.formatScopedVars(line);
       line = this.formatVars(line);
       line = this.formatControls(line);
       line = this.formatFunctions(line);

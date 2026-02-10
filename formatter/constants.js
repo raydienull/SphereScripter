@@ -282,6 +282,20 @@ const Variables = [
 ];
 
 /**
+ * Variable prefixes that commonly appear in dotted assignments (e.g. TAG.name=).
+ * These are handled separately from plain keyword assignments.
+ * @type {string[]}
+ */
+const ScopedVarPrefixes = [
+  "TAG",
+  "CTAG",
+  "VAR",
+  "LOCAL",
+  "FLOAT",
+  "DEFMSG"
+];
+
+/**
  * Trigger event names used in Sphere scripts.
  * These are event handlers that can be triggered by various game actions.
  * Used in ON=@TriggerName patterns.
@@ -526,6 +540,7 @@ const TypesKeywords = [
 // Export all keyword arrays for use by the formatter
 module.exports = {
   VarsKeywords: Variables,
+  ScopedVarPrefixes,
   Triggers,
   Controls,
   TypesKeywords

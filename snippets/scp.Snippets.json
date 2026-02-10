@@ -255,6 +255,76 @@
     ],
     "description": "Create a new type definition"
   },
+  "areadef": {
+    "prefix": "areadef",
+    "body": [
+      "[AREADEF ${1:a_area_name}]",
+      "NAME=${2:Area Name}",
+      "",
+      "ON=@Enter",
+      "$0",
+      "",
+      "ON=@Exit",
+      "RETURN 1"
+    ],
+    "description": "Create a new area definition"
+  },
+  "skill": {
+    "prefix": "skill",
+    "body": [
+      "[SKILL ${1:skill_name}]",
+      "DEFNAME=${1:skill_name}",
+      "TITLE=${2:Skill Title}",
+      "",
+      "ON=@Start",
+      "$0",
+      "RETURN 1"
+    ],
+    "description": "Create a new skill definition"
+  },
+  "skillclass": {
+    "prefix": "skillclass",
+    "body": [
+      "[SKILLCLASS ${1:sc_class_name}]",
+      "DEFNAME=${1:sc_class_name}",
+      "NAME=${2:Class Name}",
+      "$0"
+    ],
+    "description": "Create a new skill class definition"
+  },
+  "skillmenu": {
+    "prefix": "skillmenu",
+    "body": [
+      "[SKILLMENU ${1:sm_menu_name}]",
+      "ON=0",
+      "$0"
+    ],
+    "description": "Create a new skill menu"
+  },
+  "spawn": {
+    "prefix": "spawn",
+    "body": [
+      "[SPAWN ${1:s_spawn_name}]",
+      "DEFNAME=${1:s_spawn_name}",
+      "",
+      "ON=@Create",
+      "$0"
+    ],
+    "description": "Create a new spawn definition"
+  },
+  "spell": {
+    "prefix": "spell",
+    "body": [
+      "[SPELL ${1:spell_name}]",
+      "DEFNAME=${1:spell_name}",
+      "NAME=${2:Spell Name}",
+      "",
+      "ON=@Cast",
+      "$0",
+      "RETURN 1"
+    ],
+    "description": "Create a new spell definition"
+  },
   "events": {
     "prefix": "events",
     "body": [
