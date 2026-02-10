@@ -467,7 +467,7 @@ const Triggers = [
  * These keywords control program flow and logic structures.
  * @type {string[]}
  */
-const Controls = [
+const ControlKeywords = [
   "BEGIN",
   "END",
   "DORAND",
@@ -542,6 +542,6 @@ module.exports = {
   VarsKeywords: Variables,
   ScopedVarPrefixes,
   Triggers,
-  Controls,
+  ControlKeywords,
   TypesKeywords
 };

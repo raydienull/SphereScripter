@@ -5,13 +5,22 @@
  */
 
 const vscode = require("vscode");
-const { VarsKeywords, ScopedVarPrefixes, Controls } = require("./constants");
+const { VarsKeywords, ScopedVarPrefixes, ControlKeywords } = require("./constants");
 
 /**
  * Formatter class for Sphere script (.scp) files.
  * Provides document formatting functionality for VS Code.
  */
 class SCPFormatter {
+  /**
+   * Returns true when a line is a comment and should not be formatted.
+   * 
+   * @param {string} line - The line to check
+   * @returns {boolean} True if the line is a comment
+   */
+  isCommentLine(line) {
+    return line.trim().startsWith("//");
+  }
   /**
    * Main method called by VS Code to format a document.
    * Processes each line of the document and applies formatting rules.
@@ -44,15 +53,9 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase triggers
    */
-  formatTriggers(line) {
-    const pattern = /(\bon=@\w+\b[^\s/]*)(?!\S)/gi;
-
-    // Do not format commented lines
-    if (line.trim().startsWith("//")) {
-      return line;
-    }
-
-    return line.replace(pattern, (match) => {
+  formatTriggers(sourceLine) {
+    const triggerPattern = /(\bon=@\w+\b[^\s/]*)(?!\S)/gi;
+    return sourceLine.replace(triggerPattern, (match) => {
       return match.toUpperCase();
     });
   }
@@ -64,13 +67,13 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase variable keywords
    */
-  formatVars(line) {
+  formatAssignmentKeywords(sourceLine) {
     for (const varKeyword of VarsKeywords) {
-      const pattern = new RegExp(`^[ \\t]*${varKeyword}=`, "i");
-      line = line.replace(pattern, `${varKeyword.toUpperCase()}=`);
+      const assignmentPattern = new RegExp(`^[ \\t]*${varKeyword}=`, "i");
+      sourceLine = sourceLine.replace(assignmentPattern, `${varKeyword.toUpperCase()}=`);
     }
 
-    return line;
+    return sourceLine;
   }
 
   /**
@@ -80,21 +83,15 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase scoped prefixes
    */
-  formatScopedVars(line) {
-    const trimmed = line.trim();
-
-    if (trimmed.startsWith("//")) {
-      return line;
-    }
-
+  formatScopedAssignments(sourceLine) {
     for (const prefix of ScopedVarPrefixes) {
-      const pattern = new RegExp(`^(\\s*)(${prefix})(?=\\.|=)`, "i");
-      line = line.replace(pattern, (match, whitespace, keyword) => {
+      const scopedPattern = new RegExp(`^(\\s*)(${prefix})(?=\\.|=)`, "i");
+      sourceLine = sourceLine.replace(scopedPattern, (match, whitespace, keyword) => {
         return whitespace + keyword.toUpperCase();
       });
     }
 
-    return line;
+    return sourceLine;
   }
 
   /**
@@ -104,23 +101,16 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase control keywords
    */
-  formatControls(line) {
-    const trimmed = line.trim();
-    
-    // Skip comment lines
-    if (trimmed.startsWith("//")) {
-      return line;
-    }
-
-    for (const control of Controls) {
+  formatControlKeywords(sourceLine) {
+    for (const control of ControlKeywords) {
       // Match control keywords at the beginning of line (possibly with whitespace)
-      const pattern = new RegExp(`^(\\s*)(${control})\\b`, "i");
-      line = line.replace(pattern, (match, whitespace, keyword) => {
+      const controlPattern = new RegExp(`^(\\s*)(${control})\\b`, "i");
+      sourceLine = sourceLine.replace(controlPattern, (match, whitespace, keyword) => {
         return whitespace + keyword.toUpperCase();
       });
     }
 
-    return line;
+    return sourceLine;
   }
 
   /**
@@ -130,22 +120,15 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase section headers
    */
-  formatSections(line) {
-    const trimmed = line.trim();
-    
-    // Skip comment lines
-    if (trimmed.startsWith("//")) {
-      return line;
-    }
-
+  formatSectionHeaders(sourceLine) {
     // Format section headers like [TYPEDEF], [ITEMDEF], [CHARDEF], etc.
     const sectionPattern = /^\s*\[(\w+)(\s+.*)?\]\s*$/i;
-    line = line.replace(sectionPattern, (match, sectionType, rest) => {
+    sourceLine = sourceLine.replace(sectionPattern, (match, sectionType, rest) => {
       rest = rest || "";
       return `[${sectionType.toUpperCase()}${rest}]`;
     });
 
-    return line;
+    return sourceLine;
   }
 
   /**
@@ -155,27 +138,20 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The formatted line with uppercase function calls
    */
-  formatFunctions(line) {
-    const trimmed = line.trim();
-    
-    // Skip comment lines
-    if (trimmed.startsWith("//")) {
-      return line;
-    }
-
+  formatCommandCalls(sourceLine) {
     // Common Sphere functions that should be uppercase
-    const functions = [
+    const commandKeywords = [
       "SAY", "EMOTE", "SYSMESSAGE", "DIALOG", "NEWITEM", "EQUIP", "UNEQUIP",
       "GO", "FACE", "FOLLOW", "SPEAK", "BOUNCE", "CONSUME", "REMOVE"
     ];
 
-    for (const func of functions) {
+    for (const func of commandKeywords) {
       // Match function calls (word followed by space or opening parenthesis)
-      const pattern = new RegExp(`\\b(${func})\\b(?=\\s|\\(|$)`, "gi");
-      line = line.replace(pattern, func.toUpperCase());
+      const commandPattern = new RegExp(`\\b(${func})\\b(?=\\s|\\(|$)`, "gi");
+      sourceLine = sourceLine.replace(commandPattern, func.toUpperCase());
     }
 
-    return line;
+    return sourceLine;
   }
 
   /**
@@ -185,24 +161,25 @@ class SCPFormatter {
    * @param {string} line - The line to format
    * @returns {string} The fully formatted line
    */
-  formatLine(line) {
-    // Do not format commented lines
-    if (!line.trim().startsWith("//")) {
-      // Apply formatting in order:
-      // 1. Section headers (must be first to avoid conflicts)
-      // 2. Triggers (ON= patterns)
-      // 3. Variables (keyword= patterns) 
-      // 4. Control structures (BEGIN, IF, etc.)
-      // 5. Function calls (SAY, EMOTE, etc.)
-      line = this.formatSections(line);
-      line = this.formatTriggers(line);
-      line = this.formatScopedVars(line);
-      line = this.formatVars(line);
-      line = this.formatControls(line);
-      line = this.formatFunctions(line);
+  formatLine(sourceLine) {
+    if (this.isCommentLine(sourceLine)) {
+      return sourceLine;
     }
 
-    return line;
+    // Apply formatting in order:
+    // 1. Section headers (must be first to avoid conflicts)
+    // 2. Triggers (ON= patterns)
+    // 3. Variables (keyword= patterns) 
+    // 4. Control structures (BEGIN, IF, etc.)
+    // 5. Function calls (SAY, EMOTE, etc.)
+    sourceLine = this.formatSectionHeaders(sourceLine);
+    sourceLine = this.formatTriggers(sourceLine);
+    sourceLine = this.formatScopedAssignments(sourceLine);
+    sourceLine = this.formatAssignmentKeywords(sourceLine);
+    sourceLine = this.formatControlKeywords(sourceLine);
+    sourceLine = this.formatCommandCalls(sourceLine);
+
+    return sourceLine;
   }
 }
 
