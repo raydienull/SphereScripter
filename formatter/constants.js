@@ -504,6 +504,36 @@ const ControlKeywords = [
 ];
 
 /**
+ * Command keywords that are used as the leading token of a statement
+ * (e.g. "SAY hello", "NEWITEM i_gold"). Unlike assignment keywords they are
+ * written without a trailing "=", so they are matched only at the start of a
+ * line to avoid rewriting words that appear inside message text.
+ * @type {string[]}
+ */
+const CommandKeywords = [
+  "SAY",
+  "SAYU",
+  "SAYUA",
+  "EMOTE",
+  "SYSMESSAGE",
+  "DIALOG",
+  "DIALOGCLOSE",
+  "NEWITEM",
+  "NEWDUPE",
+  "EQUIP",
+  "UNEQUIP",
+  "GO",
+  "GOBACK",
+  "GOSUB",
+  "FACE",
+  "FOLLOW",
+  "SPEAK",
+  "BOUNCE",
+  "CONSUME",
+  "REMOVE"
+];
+
+/**
  * Type and reference keywords used in Sphere scripts.
  * These represent various object types and references available in scripts.
  * @type {string[]}
@@ -544,5 +574,6 @@ module.exports = {
   ScopedVarPrefixes,
   Triggers,
   ControlKeywords,
+  CommandKeywords,
   TypesKeywords
 };
