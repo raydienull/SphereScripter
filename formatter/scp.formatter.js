@@ -153,6 +153,16 @@ class SCPFormatter {
   isCommentLine(line) {
     return line.trim().startsWith("//");
   }
+
+  /**
+   * Returns true when a line declares a trigger, e.g. "ON=@Create".
+   *
+   * @param {string} line - The line to check
+   * @returns {boolean} True if the line is a trigger declaration
+   */
+  isTriggerLine(line) {
+    return /^\s*ON\s*=\s*@/i.test(line);
+  }
   /**
    * Main method called by VS Code to format a document.
    * Processes each line of the document and applies formatting rules.
@@ -164,6 +174,10 @@ class SCPFormatter {
     const textEdits = [];
     const indentUnit = this.getIndentUnit(options);
     let indentLevel = 0;
+    // Track surrounding context so we can enforce blank-line separation.
+    // Start of file counts as "blank" so no leading blank line is inserted.
+    let prevWasBlank = true;
+    let prevWasSectionHeader = false;
 
     for (let i = 0; i < document.lineCount; i++) {
       const line = document.lineAt(i);
@@ -171,10 +185,12 @@ class SCPFormatter {
       const trimmedContent = trimmedLine.trimLeft();
       const formattedContent = this.formatLine(trimmedContent);
       let formattedLine = formattedContent;
+      let isSection = false;
 
       if (formattedContent.length > 0) {
         if (this.isSectionHeader(formattedContent)) {
           indentLevel = 0;
+          isSection = true;
         } else {
           const controlKeyword = this.getControlKeyword(formattedContent);
           const isCloser = this.isBlockEnd(controlKeyword);
@@ -194,7 +210,28 @@ class SCPFormatter {
             indentLevel += 1;
           }
         }
+
+        // Ensure a blank line before each new section block and before each
+        // trigger. A trigger that directly follows its section header is left
+        // attached (no gap between the header and its first trigger).
+        const isTrigger = this.isTriggerLine(formattedContent);
+        const needsBlankBefore =
+          (isSection && !prevWasBlank) ||
+          (isTrigger && !prevWasBlank && !prevWasSectionHeader);
+        if (needsBlankBefore) {
+          formattedLine = `\n${formattedLine}`;
+        }
       }
+
+      // Update context for the next iteration.
+      if (formattedContent.length === 0) {
+        prevWasBlank = true;
+        prevWasSectionHeader = false;
+      } else {
+        prevWasBlank = false;
+        prevWasSectionHeader = isSection;
+      }
+
       const startPos = new vscode.Position(i, 0);
       const endPos = new vscode.Position(i, line.text.length);
       const range = new vscode.Range(startPos, endPos);

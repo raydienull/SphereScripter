@@ -204,6 +204,27 @@
     ],
     "description": "if-elseif-else block"
   },
+  "if-elif-else": {
+    "prefix": "if-elif-else",
+    "body": [
+      "IF ($1)",
+      "    $2",
+      "ELIF ($3)",
+      "    $4",
+      "ELSE",
+      "    $5",
+      "ENDIF"
+    ],
+    "description": "if-elif-else block (ELIF = else if)"
+  },
+  "elif": {
+    "prefix": "elif",
+    "body": [
+      "ELIF ($1)",
+      "    $2"
+    ],
+    "description": "ELIF branch (else if) inside an IF..ENDIF block"
+  },
   "itemdef": {
     "prefix": "itemdef",
     "body": [
